@@ -26,13 +26,13 @@ import datasets.mvtec as mvtec
 
 # device setup
 use_cuda = torch.cuda.is_available()
-device = torch.device('cuda' if use_cuda else 'cpu')
+device = torch.device('cuda' if use_cuda else use_cuda)
 
 
 def parse_args():
     parser = argparse.ArgumentParser('PaDiM')
-    parser.add_argument('--data_path', type=str, default='D:/dataset/mvtec_anomaly_detection')
-    parser.add_argument('--save_path', type=str, default='./mvtec_result')
+    parser.add_argument('--data_path', type=str, default='D:\\workspace\\saerotech\\2024-25_HYZ\\ModelEgitimleri\\PaDIM\\dataset')
+    parser.add_argument('--save_path', type=str, default='D:\\workspace\\saerotech\\2024-25_HYZ\\ModelEgitimleri\\PaDIM\\output')
     parser.add_argument('--arch', type=str, choices=['resnet18', 'wide_resnet50_2'], default='wide_resnet50_2')
     return parser.parse_args()
 

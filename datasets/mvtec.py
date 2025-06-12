@@ -10,14 +10,15 @@ from torchvision import transforms as T
 
 
 # URL = 'ftp://guest:GU.205dldo@ftp.softronics.ch/mvtec_anomaly_detection/mvtec_anomaly_detection.tar.xz'
-CLASS_NAMES = ['bottle', 'cable', 'capsule', 'carpet', 'grid',
-               'hazelnut', 'leather', 'metal_nut', 'pill', 'screw',
-               'tile', 'toothbrush', 'transistor', 'wood', 'zipper']
-
+# CLASS_NAMES = ['bottle', 'cable', 'capsule', 'carpet', 'grid',
+#                'hazelnut', 'leather', 'metal_nut', 'pill', 'screw',
+#                'tile', 'toothbrush', 'transistor', 'wood', 'zipper']
+CLASS_NAMES = ['uap']
+dataset_path = "D:/workspace/saerotech/2024-25_HYZ/ModelEgitimleri/PaDIM/dataset"
 
 class MVTecDataset(Dataset):
-    def __init__(self, dataset_path='D:/dataset/mvtec_anomaly_detection', class_name='bottle', is_train=True,
-                 resize=256, cropsize=224):
+    def __init__(self, dataset_path=dataset_path, class_name='uap', is_train=True,
+                 resize=256, cropsize=256):
         assert class_name in CLASS_NAMES, 'class_name: {}, should be in {}'.format(class_name, CLASS_NAMES)
         self.dataset_path = dataset_path
         self.class_name = class_name
@@ -33,7 +34,7 @@ class MVTecDataset(Dataset):
         self.x, self.y, self.mask = self.load_dataset_folder()
 
         # set transforms
-        self.transform_x = T.Compose([T.Resize(resize, Image.ANTIALIAS),
+        self.transform_x = T.Compose([T.Resize(resize, Image.Resampling.LANCZOS),
                                       T.CenterCrop(cropsize),
                                       T.ToTensor(),
                                       T.Normalize(mean=[0.485, 0.456, 0.406],
@@ -75,7 +76,7 @@ class MVTecDataset(Dataset):
                 continue
             img_fpath_list = sorted([os.path.join(img_type_dir, f)
                                      for f in os.listdir(img_type_dir)
-                                     if f.endswith('.png')])
+                                     if f.endswith('.jpg')])
             x.extend(img_fpath_list)
 
             # load gt labels
